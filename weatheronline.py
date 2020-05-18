@@ -20,8 +20,11 @@ def main():
     print(now)
     # response = get_data("latest-day", "Lufttemperatur" )
     # print(response)
-    response2 = get_sunshine("latest-day")
+    response2 = get_sunshine("latest-months")
     # print(response2)
+    time = datetime.timestamp(datetime(1999,1,31,12))
+    print('tid' ,time)
+    print(sunshine_percent('2020-05-14', '2020-05-14', '09:00:00', '11:00:00'), '%')
 
     
 
@@ -59,7 +62,26 @@ def get_sunshine(period):
     filter(infile, outfile)
     raw = pd.read_csv(outfile, dtype= "category", sep= ",")
     data = pd.DataFrame(raw)
+    print(data)
     return data
+
+def sunshine_percent(date_from, date_to, time_from, time_to):
+    data = get_sunshine('latest-months')
+    start = find_row(date_from, time_from, data)
+    end = find_row(date_to, time_to, data)
+    solsken_toint = data.loc[start:end, 'Solskenstid'].astype('int64')
+    sum_is = solsken_toint.sum(axis = 0)
+    total_sum = (end - start + 1) * 3600
+    percent = (sum_is / total_sum) * 100
+    return percent
+    
+    
+def find_row(date,time, data):
+    for index , row in data.iterrows():
+        if row['Datum'] == date and row['Tid (UTC)'] == time:
+            return index
+        
+            
 
 def get_data(date, parameter):
     period = date
