@@ -98,9 +98,9 @@ def choice(para, period, reptype):
     frame = pd.DataFrame()
     for parameter in para:
         if parameter == "Sunshine procentage":
-            data = datareader.sunshine_percent(period["date_from"], period["date_to"], period["time_from"],period["time_from"])
+            data = datareader.sunshine_percent(period["date_from"], period["date_to"], period["time_from"],period["time_to"])
         else:
-            data = datareader.get_data(parameter_dict, parameter, period["date_from"], period["date_to"], period["time_from"],period["time_from"])
+            data = datareader.get_data(parameter_dict, parameter, period["date_from"], period["date_to"], period["time_from"],period["time_to"])
         frame = append_parameter_data(frame, data, parameter, para)
 
     if reptype.lower() == "file":
